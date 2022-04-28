@@ -1,4 +1,11 @@
 "use strict";
+//Solution Explain
+//1. Convert time to 24 hours format
+//2. Convert time to minutes
+//3. Sort time ascendingly
+//4. Iterate and find the smallet "X" difference
+//5. To find the shortest "Y" difference for largest Time to reach smallet Time
+//6. Compare again who is the smallet between "X" and "Y";
 function timeDiffVersion2(mat) {
     let newTime = [];
     let minArr = [];

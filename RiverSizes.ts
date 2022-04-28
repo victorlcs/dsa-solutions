@@ -1,76 +1,76 @@
 //https://www.algoexpert.io/questions/River%20Sizes
+//let mySet = new Set();
 function riverSizes(matrix: number[][]) {
-  // Write your code here.
-  
-  matrix.forEach((a,pIndex) => {
-      a.forEach((b,cIndex) => {     
-          if(b === 1){
+  let listing = new Map();
 
-          }
-      })
-  })
-  return [-1];
-}
-
-function helper(value:number,pIndex:number,cIndex:number,a:number[],direction="right") {
-    let curSize:number = 0;
-    //let toChkPosArr:number[][] = [[]];
-    if (value === 1) {
-        curSize++;
-        //toChkPosArr.push([pIndex,cIndex]);
-
-        if(direction === "right") {
-            let nextIndex = cIndex+1;
-            helper(a[nextIndex],pIndex,nextIndex,a);
-        }else{
-            let nextIndex = pIndex+1;
-            helper(a[nextIndex],nextIndex,cIndex,a,direction="down");
+  matrix.forEach((a, pIndex, aArray) => {
+    a.forEach((b, cIndex, bArray) => {
+      let list = [];
+      if (b === 1) {
+        if (pIndex !== 0)
+          if (aArray[pIndex - 1][cIndex] === 1)
+            list.push(`[${pIndex - 1},${cIndex}]`);
+        if (cIndex !== 0)
+          if (aArray[pIndex][cIndex - 1] === 1)
+            list.push(`[${pIndex},${cIndex - 1}]`);
+        if (cIndex !== bArray.length - 1)
+          if (aArray[pIndex][cIndex + 1] === 1)
+            list.push(`[${pIndex},${cIndex + 1}]`);
+        if (pIndex !== aArray.length - 1) {
+          if (aArray[pIndex + 1][cIndex] === 1)
+            list.push(`[${pIndex + 1},${cIndex}]`);
         }
-        
-    }else {
-        let nextIndex = pIndex+1;
-        helper(a[nextIndex],nextIndex,cIndex,a,direction="down");
-    }
+
+        listing.set(`[${pIndex},${cIndex}]`, [...list]);
+      }
+    });
+  });
+
+  let river = Array.from(listing.keys());
+  //depthFirstSearch(river[0],listing);
+
+  return depthFirstSearch(river[0],listing);
 }
 
+function depthFirstSearch(start: string, maps = new Map(), mySet = new Set(), answer:number[] = []) {
+  let value: string[] = maps.get(start);
+  if (value) {
+    mySet.add(start);
+    maps.delete(start);
 
+    value.forEach((x, index, arr) => {
+      if (!mySet.has(x)) {
+        depthFirstSearch(x,maps,mySet,answer);
+      }
+    });
 
-console.log(riverSizes([
-    [1, 0, 0, 1, 0],
-    [1, 0, 1, 0, 0],
-    [0, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1],
-    [1, 0, 1, 1, 0]
-]));
-
-console.log(riverSizes([
-    [1, 0, 1, 1, 0],
-    [0, 1, 1, 1, 0],
-    [0, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1],
-    [1, 0, 1, 1, 0]
-]));
-
-const riverMap = new Map();
-
-function doSomething(pIndex:number,cIndex:number,matrix: number[][]) {
-    let topIndex = pIndex - 1;
-    let leftIndex = cIndex - 1;
-    let rightIndex = cIndex + 1;
-    let bottomIndex = pIndex + 1;
-
-    if(riverMap.has(`[$topIndex,$cIndex]`)) {
-        return;
-    }else {
-
-        if(topIndex >=0 && matrix[topIndex][cIndex] === 1) {
-        let mapValue = riverMap.get(`[$topIndex,$cIndex]`);
-        if (mapValue) {
-
-        }
-    }
+    if (mySet.size != 0) {
+      answer.push(mySet.size);
+      mySet.clear();
     }
 
-    
-
+    if (maps.size != 0) { 
+      let river = Array.from(maps.keys());
+      depthFirstSearch(river[0],maps,mySet,answer);
+    }
+  }
+  return answer
 }
+
+let test =  [
+  [1, 0, 0, 1, 0],
+  [1, 0, 1, 0, 0],
+  [0, 0, 1, 0, 1],
+  [1, 0, 1, 0, 1],
+  [1, 0, 1, 1, 0]
+];
+let test2 =  [
+  [1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0],
+  [1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0],
+  [0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1],
+  [1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0],
+  [1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1]
+];
+console.log(
+  riverSizes(test1)
+);
