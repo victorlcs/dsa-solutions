@@ -12,7 +12,7 @@ function countNegatives(grid) {
         }
         else {
             while (lowerIndex < upperIndex) {
-                //const mid = lowerIndex + Math.floor((upperIndex - lowerIndex)/2);
+                //const mid = lowerIndex + Math.floor((upperIndex - lowerIndex)/2); //also works
                 const mid = Math.floor((upperIndex + lowerIndex) / 2);
                 if (grid[i][mid] < 0 && grid[i][mid - 1] >= 0) {
                     noOfNegative += (grid[i].length - mid);
